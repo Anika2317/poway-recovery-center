@@ -1,0 +1,115 @@
+#prc-chat-toggle {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #2c3e50;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  font-size: 24px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  z-index: 9998; }
+
+#prc-chat-widget {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 350px;
+  max-height: 500px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  font-family: system-ui, -apple-system, sans-serif;
+  z-index: 9999;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+  transform: translateY(120%); }
+  #prc-chat-widget.open {
+    transform: translateY(0); }
+  #prc-chat-widget #prc-chat-header {
+    background: #2c3e50;
+    color: white;
+    padding: 16px;
+    font-weight: 600;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    position: relative; }
+    #prc-chat-widget #prc-chat-header #prc-close-btn {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 20px;
+      cursor: pointer; }
+  #prc-chat-widget #prc-crisis-popup {
+    display: none;
+    background: #fff3cd;
+    color: #856404;
+    padding: 12px;
+    font-size: 13px;
+    border-bottom: 1px solid #ffeeba;
+    position: relative; }
+    #prc-chat-widget #prc-crisis-popup.visible {
+      display: block; }
+    #prc-chat-widget #prc-crisis-popup .prc-crisis-close {
+      background: none;
+      border: none;
+      color: #856404;
+      font-size: 16px;
+      font-weight: bold;
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      cursor: pointer; }
+  #prc-chat-widget #prc-chat-body {
+    flex: 1;
+    padding: 16px;
+    overflow-y: auto;
+    background: #f8f9fa;
+    min-height: 300px; }
+    #prc-chat-widget #prc-chat-body .prc-msg {
+      margin-bottom: 12px;
+      padding: 10px 14px;
+      border-radius: 18px;
+      font-size: 14px;
+      line-height: 1.4;
+      max-width: 85%; }
+      #prc-chat-widget #prc-chat-body .prc-msg.bot {
+        background: #e9ecef;
+        color: #333;
+        align-self: flex-start;
+        border-bottom-left-radius: 4px; }
+      #prc-chat-widget #prc-chat-body .prc-msg.user {
+        background: #007bff;
+        color: white;
+        align-self: flex-end;
+        margin-left: auto;
+        border-bottom-right-radius: 4px; }
+  #prc-chat-widget #prc-chat-input-area {
+    display: flex;
+    padding: 12px;
+    background: white;
+    border-top: 1px solid #dee2e6; }
+    #prc-chat-widget #prc-chat-input-area #prc-chat-input {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid #ced4da;
+      border-radius: 20px;
+      outline: none;
+      font-size: 14px; }
+    #prc-chat-widget #prc-chat-input-area #prc-send-btn {
+      background: #007bff;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      margin-left: 8px;
+      cursor: pointer;
+      font-weight: bold; }

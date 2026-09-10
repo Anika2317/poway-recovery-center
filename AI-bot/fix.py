@@ -1,0 +1,157 @@
+import os
+
+makefile_code = """install:
+\tpip install libsass
+
+css:
+\tpysassc style.sass style.css
+
+run:
+\tpython3 -m http.server 8000
+
+dev: install css run
+"""
+
+sass_code = """$primary-color: #007bff
+$header-bg: #2c3e50
+$crisis-bg: #fff3cd
+$crisis-text: #856404
+$chat-bg: #f8f9fa
+
+#prc-chat-toggle
+  position: fixed
+  bottom: 20px
+  right: 20px
+  background: $header-bg
+  color: white
+  border: none
+  border-radius: 50%
+  width: 60px
+  height: 60px
+  font-size: 24px
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2)
+  cursor: pointer
+  z-index: 9998
+
+#prc-chat-widget
+  position: fixed
+  bottom: 20px
+  right: 20px
+  width: 350px
+  max-height: 500px
+  background: #ffffff
+  border-radius: 12px
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15)
+  display: flex
+  flex-direction: column
+  font-family: system-ui, -apple-system, sans-serif
+  z-index: 9999
+  overflow: hidden
+  transition: transform 0.3s ease
+  transform: translateY(120%)
+
+  &.open
+    transform: translateY(0)
+
+  #prc-chat-header
+    background: $header-bg
+    color: white
+    padding: 16px
+    font-weight: 600
+    display: flex
+    justify-content: space-between
+    align-items: center
+    cursor: pointer
+    position: relative
+
+    #prc-close-btn
+      background: none
+      border: none
+      color: white
+      font-size: 20px
+      cursor: pointer
+
+  #prc-crisis-popup
+    display: none
+    background: $crisis-bg
+    color: $crisis-text
+    padding: 12px
+    font-size: 13px
+    border-bottom: 1px solid #ffeeba
+    position: relative
+
+    &.visible
+      display: block
+
+    .prc-crisis-close
+      background: none
+      border: none
+      color: $crisis-text
+      font-size: 16px
+      font-weight: bold
+      position: absolute
+      top: 8px
+      right: 8px
+      cursor: pointer
+
+  #prc-chat-body
+    flex: 1
+    padding: 16px
+    overflow-y: auto
+    background: $chat-bg
+    min-height: 300px
+
+    .prc-msg
+      margin-bottom: 12px
+      padding: 10px 14px
+      border-radius: 18px
+      font-size: 14px
+      line-height: 1.4
+      max-width: 85%
+
+      &.bot
+        background: #e9ecef
+        color: #333
+        align-self: flex-start
+        border-bottom-left-radius: 4px
+
+      &.user
+        background: $primary-color
+        color: white
+        align-self: flex-end
+        margin-left: auto
+        border-bottom-right-radius: 4px
+
+  #prc-chat-input-area
+    display: flex
+    padding: 12px
+    background: white
+    border-top: 1px solid #dee2e6
+
+    #prc-chat-input
+      flex: 1
+      padding: 10px
+      border: 1px solid #ced4da
+      border-radius: 20px
+      outline: none
+      font-size: 14px
+
+    #prc-send-btn
+      background: $primary-color
+      color: white
+      border: none
+      border-radius: 50%
+      width: 40px
+      height: 40px
+      margin-left: 8px
+      cursor: pointer
+      font-weight: bold
+"""
+
+with open('Makefile', 'w') as f:
+    f.write(makefile_code)
+
+with open('style.sass', 'w') as f:
+    f.write(sass_code)
+
+print("SUCCESS: Makefile and style.sass have been written perfectly.")

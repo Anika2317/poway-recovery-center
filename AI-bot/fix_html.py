@@ -1,0 +1,113 @@
+html_content = """<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Poway Recovery Center - Chat Test</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<button id="prc-chat-toggle">💬</button>
+
+<div id="prc-chat-widget">
+  <div id="prc-chat-header">
+    <span>PRC Support Bot</span>
+    <button id="prc-close-btn">&times;</button>
+  </div>
+  
+  <div id="prc-crisis-popup">
+    <strong>Crisis Support:</strong> If you are experiencing severe withdrawal or a medical emergency, please call <strong>988</strong> or visit a local San Diego emergency room immediately. We are still here to chat.
+    <button class="prc-crisis-close" onclick="document.getElementById('prc-crisis-popup').classList.remove('visible')">&times;</button>
+  </div>
+
+  <div id="prc-chat-body">
+    <div class="prc-msg bot">Hi. This is a safe, confidential space. How can we support your recovery today?</div>
+  </div>
+  
+  <div id="prc-chat-input-area">
+    <input type="text" id="prc-chat-input" placeholder="Type your message..." />
+    <button id="prc-send-btn">➤</button>
+  </div>
+</div>
+
+<script>
+  const toggleBtn = document.getElementById('prc-chat-toggle');
+  const widget = document.getElementById('prc-chat-widget');
+  const closeBtn = document.getElementById('prc-close-btn');
+  const inputArea = document.getElementById('prc-chat-input');
+  const sendBtn = document.getElementById('prc-send-btn');
+  const chatBody = document.getElementById('prc-chat-body');
+  const crisisPopup = document.getElementById('prc-crisis-popup');
+
+  const BACKEND_WEBHOOK_URL = 'https://your-secure-backend.com/api/chat';
+
+  toggleBtn.addEventListener('click', () => {
+    widget.classList.add('open');
+    toggleBtn.style.display = 'none';
+  });
+
+  closeBtn.addEventListener('click', () => {
+    widget.classList.remove('open');
+    setTimeout(() => toggleBtn.style.display = 'block', 300);
+  });
+
+  async function sendMessage() {
+    const text = inputArea.value.trim();
+    if (!text) return;
+
+    const userMsg = document.createElement('div');
+    userMsg.className = 'prc-msg user';
+    userMsg.textContent = text;
+    chatBody.appendChild(userMsg);
+    inputArea.value = '';
+    chatBody.scrollTop = chatBody.scrollHeight;
+
+    const loadingMsg = document.createElement('div');
+    loadingMsg.className = 'prc-msg bot';
+    loadingMsg.textContent = '...';
+    chatBody.appendChild(loadingMsg);
+    chatBody.scrollTop = chatBody.scrollHeight;
+
+    try {
+      const response = await fetch(BACKEND_WEBHOOK_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: text })
+      });
+      
+      const data = await response.json();
+      chatBody.removeChild(loadingMsg);
+      
+      if (data.isCrisis) {
+        crisisPopup.classList.add('visible');
+      }
+      
+      const botMsg = document.createElement('div');
+      botMsg.className = 'prc-msg bot';
+      botMsg.textContent = data.reply || "I'm here for you. Let's get you connected to a meeting.";
+      chatBody.appendChild(botMsg);
+    } catch (error) {
+      chatBody.removeChild(loadingMsg);
+      const errorMsg = document.createElement('div');
+      errorMsg.className = 'prc-msg bot';
+      errorMsg.textContent = "We're experiencing a connection issue, but you are not alone. Please call our main line at (858) 414-1856.";
+      chatBody.appendChild(errorMsg);
+    }
+    chatBody.scrollTop = chatBody.scrollHeight;
+  }
+
+  sendBtn.addEventListener('click', sendMessage);
+  inputArea.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') sendMessage();
+  });
+</script>
+
+</body>
+</html>
+"""
+
+with open("index.html", "w") as f:
+    f.write(html_content)
+
+print("SUCCESS: index.html has been created perfectly.")
