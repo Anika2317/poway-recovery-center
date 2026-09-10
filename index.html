@@ -1,108 +1,1191 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Poway Recovery Center - Chat Test</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Poway Recovery Center</title>
+    <style>
+        /* CSS Variables for Trauma-Informed, Calming Color Palette */
+        :root {
+            --primary: #2C5F6B; /* Deep calming teal */
+            --secondary: #4A90E2; /* Soft blue */
+            --accent: #E3F2FD; /* Very light blue */
+            --text-dark: #333333;
+            --text-light: #F5F7FA;
+            --danger: #D32F2F; /* Subdued red for crisis */
+            --success: #388E3C;
+            --bg-color: #F8FBFC;
+            --card-bg: #FFFFFF;
+            --font-main: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            --transition: all 0.3s ease;
+        }
+
+        /* Global Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            line-height: 1.6;
+            padding-top: 40px; /* Space for the fixed crisis banner */
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        button {
+            cursor: pointer;
+            border: none;
+            outline: none;
+            font-family: var(--font-main);
+        }
+
+        /* Persistent Crisis Banner */
+        #crisis-banner {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 40px;
+            background-color: var(--danger);
+            color: #FFF;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.95rem;
+            z-index: 1000;
+            letter-spacing: 0.5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        /* Sticky Navigation Bar */
+        #navbar {
+            position: sticky;
+            top: 40px;
+            background-color: var(--card-bg);
+            width: 100%;
+            height: 70px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 5%;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            z-index: 999;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            font-weight: 500;
+            color: var(--text-dark);
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover {
+            color: var(--secondary);
+        }
+
+        .btn-login {
+            background-color: var(--primary);
+            color: #FFF !important;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        .btn-login:hover {
+            background-color: #1F454E;
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            height: calc(100vh - 110px);
+            min-height: 600px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            overflow: hidden;
+            color: #FFF;
+        }
+
+        .hero-video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            z-index: -2;
+            object-fit: cover;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(44, 95, 107, 0.7), rgba(20, 45, 51, 0.8));
+            z-index: -1;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            padding: 20px;
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+        }
+
+        .hero-content p {
+            font-size: 1.4rem;
+            font-weight: 300;
+            margin-bottom: 30px;
+        }
+
+        /* Section Global Styles */
+        section {
+            padding: 80px 5%;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.2rem;
+            color: var(--primary);
+            margin-bottom: 40px;
+        }
+
+        /* Image Carousel */
+        #carousel-section {
+            background-color: var(--card-bg);
+            padding: 60px 5%;
+        }
+
+        .carousel-container {
+            position: relative;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .carousel-track {
+            display: flex;
+            gap: 20px;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .carousel-track::-webkit-scrollbar {
+            display: none;
+        }
+
+        .carousel-slide {
+            min-width: 300px;
+            flex: 0 0 calc(33.333% - 14px);
+            scroll-snap-align: start;
+            background: var(--bg-color);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .carousel-slide img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .carousel-info {
+            padding: 20px;
+            text-align: center;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .carousel-info p {
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+            color: #555;
+        }
+
+        .carousel-link {
+            display: inline-block;
+            background-color: var(--secondary);
+            color: #FFF;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: bold;
+        }
+
+        .carousel-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .carousel-btn {
+            background-color: var(--primary);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: var(--transition);
+        }
+
+        .carousel-btn:hover {
+            background-color: #1F454E;
+        }
+
+        /* Interactive Schedule */
+        #schedule-section {
+            background-color: var(--accent);
+        }
+
+        .schedule-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .meeting-card {
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            border-left: 5px solid var(--secondary);
+        }
+
+        .meeting-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .meeting-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .spots-indicator {
+            font-weight: bold;
+            color: var(--success);
+        }
+
+        .spots-indicator.low {
+            color: var(--danger);
+        }
+
+        .btn-signup {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--primary);
+            color: #FFF;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: var(--transition);
+        }
+
+        .btn-signup:hover:not(:disabled) {
+            background-color: #1F454E;
+        }
+
+        .btn-signup:disabled {
+            background-color: #A0B2B6;
+            cursor: not-allowed;
+        }
+
+        /* Resources & Tools Suite */
+        .tools-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .tool-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+        }
+
+        .tool-header {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+            border-bottom: 2px solid var(--accent);
+            padding-bottom: 10px;
+        }
+
+        /* The Mood Room */
+        .mood-input-area {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .mood-input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #CCC;
+            border-radius: 8px;
+            font-size: 1rem;
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .btn-mood {
+            background-color: var(--secondary);
+            color: #FFF;
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        .mood-player-ui {
+            display: none;
+            margin-top: 20px;
+            background: var(--bg-color);
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid #E0E0E0;
+        }
+
+        .mood-status {
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .apple-mock-player {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: #FFF;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .play-btn, .lyrics-btn {
+            background: var(--primary);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        .track-info {
+            flex-grow: 1;
+        }
+
+        .track-name { font-weight: bold; }
+        .track-artist { font-size: 0.8rem; color: #666; }
+
+        .lyrics-panel {
+            display: none;
+            margin-top: 15px;
+            padding: 15px;
+            background: #FFF;
+            border-radius: 8px;
+            font-style: italic;
+            font-size: 0.9rem;
+            color: #444;
+            max-height: 150px;
+            overflow-y: auto;
+        }
+
+        /* Reflection Wall */
+        .reflection-form {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .reflection-input {
+            flex-grow: 1;
+            padding: 10px;
+            border: 1px solid #CCC;
+            border-radius: 20px;
+            font-size: 0.95rem;
+        }
+
+        .btn-post {
+            background: var(--success);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+
+        .wall-board {
+            background: var(--bg-color);
+            padding: 15px;
+            border-radius: 8px;
+            height: 250px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .wall-post {
+            background: #FFF;
+            padding: 12px 15px;
+            border-radius: 8px;
+            border-left: 4px solid var(--secondary);
+            font-size: 0.9rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Recovery Journey Gallery */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .gallery-item {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            aspect-ratio: 1;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .gallery-label {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(0,0,0,0.6);
+            color: #FFF;
+            text-align: center;
+            font-size: 0.8rem;
+            padding: 5px;
+            font-weight: bold;
+        }
+
+        /* Ways to Help & Directory */
+        .help-actions {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .btn-help {
+            flex: 1;
+            padding: 12px;
+            text-align: center;
+            border-radius: 8px;
+            font-weight: bold;
+            color: #FFF;
+        }
+
+        .btn-donate { background-color: var(--success); }
+        .btn-volunteer { background-color: var(--secondary); }
+
+        .directory-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .directory-item {
+            background: var(--bg-color);
+            padding: 12px;
+            border-radius: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+        }
+
+        .directory-item a {
+            color: var(--secondary);
+            font-weight: bold;
+        }
+
+        /* Chatbot Widget */
+        #chatbot-widget {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+
+        .chatbot-btn {
+            width: 60px;
+            height: 60px;
+            background-color: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            transition: transform 0.3s ease;
+        }
+
+        .chatbot-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .chatbot-window {
+            display: none;
+            width: 320px;
+            height: 450px;
+            background: #FFF;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+            margin-bottom: 15px;
+            flex-direction: column;
+            overflow: hidden;
+            border: 1px solid #E0E0E0;
+        }
+
+        .chat-header {
+            background: var(--primary);
+            color: #FFF;
+            padding: 15px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .close-chat {
+            background: none;
+            color: #FFF;
+            font-size: 1.2rem;
+        }
+
+        .chat-messages {
+            flex-grow: 1;
+            padding: 15px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            background: var(--bg-color);
+        }
+
+        .msg {
+            max-width: 85%;
+            padding: 10px 14px;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .msg.bot {
+            background: #FFF;
+            border: 1px solid #E0E0E0;
+            align-self: flex-start;
+            border-bottom-left-radius: 2px;
+        }
+
+        .msg.user {
+            background: var(--secondary);
+            color: #FFF;
+            align-self: flex-end;
+            border-bottom-right-radius: 2px;
+        }
+
+        .chat-input-area {
+            display: flex;
+            padding: 10px;
+            border-top: 1px solid #E0E0E0;
+            background: #FFF;
+        }
+
+        .chat-input {
+            flex-grow: 1;
+            padding: 8px 12px;
+            border: 1px solid #CCC;
+            border-radius: 20px;
+            outline: none;
+        }
+
+        .chat-send {
+            background: none;
+            color: var(--primary);
+            font-weight: bold;
+            padding: 0 10px;
+        }
+
+        /* Login Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: #FFF;
+            width: 100%;
+            max-width: 400px;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.5rem;
+            color: #888;
+            background: none;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+            color: #555;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #CCC;
+            border-radius: 6px;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 12px;
+            background: var(--primary);
+            color: #FFF;
+            border-radius: 6px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        /* Responsive Design */
+        @media(max-width: 900px) {
+            .tools-grid { grid-template-columns: 1fr; }
+            .hero-content h1 { font-size: 2.5rem; }
+            .nav-links { display: none; } /* Simplified for prototype, would use hamburger menu in full */
+            .carousel-slide { flex: 0 0 calc(100% - 10px); }
+        }
+    </style>
 </head>
 <body>
 
-<button id="prc-chat-toggle">💬</button>
+    <!-- Persistent Crisis Banner -->
+    <div id="crisis-banner">
+        CRISIS HOTLINE: 988 | Available 24/7. You are not alone, help is always available.
+    </div>
 
-<div id="prc-chat-widget">
-  <div id="prc-chat-header">
-    <span>PRC Support Bot</span>
-    <button id="prc-close-btn">&times;</button>
-  </div>
-  
-  <div id="prc-crisis-popup">
-    <strong>Crisis Support:</strong> If you are experiencing severe withdrawal or a medical emergency, please call <strong>988</strong> or visit a local San Diego emergency room immediately. We are still here to chat.
-    <button class="prc-crisis-close" onclick="document.getElementById('prc-crisis-popup').classList.remove('visible')">&times;</button>
-  </div>
+    <!-- Sticky Navigation -->
+    <nav id="navbar">
+        <div class="logo">Poway Recovery Center</div>
+        <div class="nav-links">
+            <a href="#resources">Resources</a>
+            <a href="#programs">Programs</a>
+            <a href="#about">About Us</a>
+            <button class="btn-login" id="navLoginBtn">Log In</button>
+        </div>
+    </nav>
 
-  <div id="prc-chat-body">
-    <div class="prc-msg bot">Hi. This is a safe, confidential space. How can we support your recovery today?</div>
-  </div>
-  
-  <div id="prc-chat-input-area">
-    <input type="text" id="prc-chat-input" placeholder="Type your message..." />
-    <button id="prc-send-btn">➤</button>
-  </div>
-</div>
+    <!-- Hero Section with Video Loop -->
+    <header class="hero">
+        <video autoplay loop muted playsinline class="hero-video">
+            <!-- Using a standard placeholder abstract/nature loop video -->
+            <source src="https://assets.mixkit.co/videos/preview/mixkit-waterfall-in-forest-2213-large.mp4" type="video/mp4">
+        </video>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1>Poway Recovery Center</h1>
+            <p>Empowering your journey to healing, one step at a time with compassionate, evidence-based care.</p>
+        </div>
+    </header>
 
-<script>
-  const toggleBtn = document.getElementById('prc-chat-toggle');
-  const widget = document.getElementById('prc-chat-widget');
-  const closeBtn = document.getElementById('prc-close-btn');
-  const inputArea = document.getElementById('prc-chat-input');
-  const sendBtn = document.getElementById('prc-send-btn');
-  const chatBody = document.getElementById('prc-chat-body');
-  const crisisPopup = document.getElementById('prc-crisis-popup');
+    <!-- Carousel Section -->
+    <section id="carousel-section">
+        <h2 class="section-title">Explore Our Programs</h2>
+        <div class="carousel-container">
+            <div class="carousel-track" id="carouselTrack">
+                <div class="carousel-slide">
+                    <img src="https://picsum.photos/id/1015/400/250" alt="Group Therapy">
+                    <div class="carousel-info">
+                        <p>In-person and virtual group therapy sessions led by certified clinicians.</p>
+                        <a href="#programs" class="carousel-link">View Groups</a>
+                    </div>
+                </div>
+                <div class="carousel-slide">
+                    <img src="https://picsum.photos/id/1018/400/250" alt="Holistic Healing">
+                    <div class="carousel-info">
+                        <p>Integrating mindfulness, yoga, and physical wellness into recovery.</p>
+                        <a href="#programs" class="carousel-link">Holistic Approach</a>
+                    </div>
+                </div>
+                <div class="carousel-slide">
+                    <img src="https://picsum.photos/id/1025/400/250" alt="Family Support">
+                    <div class="carousel-info">
+                        <p>Healing happens together. Resources and counseling for loved ones.</p>
+                        <a href="#programs" class="carousel-link">Family Resources</a>
+                    </div>
+                </div>
+                <div class="carousel-slide">
+                    <img src="https://picsum.photos/id/1043/400/250" alt="Aftercare">
+                    <div class="carousel-info">
+                        <p>Long-term alumni networks and continuous support post-treatment.</p>
+                        <a href="#programs" class="carousel-link">Alumni Network</a>
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-controls">
+                <button class="carousel-btn" id="btnPrev">←</button>
+                <button class="carousel-btn" id="btnNext">→</button>
+            </div>
+        </div>
+    </section>
 
-  // UPDATED: Now points to our actual Python server brain!
-  const BACKEND_WEBHOOK_URL = '/api/chat';
+    <!-- Interactive Schedule -->
+    <section id="programs" style="background-color: var(--accent);">
+        <h2 class="section-title">Today's Interactive Schedule</h2>
+        <div class="schedule-grid" id="scheduleContainer">
+            <!-- Rendered via JS -->
+        </div>
+    </section>
 
-  toggleBtn.addEventListener('click', () => {
-    widget.classList.add('open');
-    toggleBtn.style.display = 'none';
-  });
+    <!-- Resources & Tools Suite -->
+    <section id="resources">
+        <h2 class="section-title">Resources & Tools Suite</h2>
+        <div class="tools-grid">
+            
+            <!-- The Mood Room -->
+            <div class="tool-card">
+                <h3 class="tool-header">The Mood Room</h3>
+                <div class="mood-input-area" id="moodSetup">
+                    <textarea class="mood-input" id="moodInput" placeholder="Describe your current situation or how you're feeling right now..."></textarea>
+                    <button class="btn-mood" id="btnAnalyzeMood">Analyze & Enter Room</button>
+                </div>
+                
+                <div class="mood-player-ui" id="moodPlayerUi">
+                    <div class="mood-status" id="moodStatusText">Curating your environment...</div>
+                    <div class="apple-mock-player">
+                        <button class="play-btn" id="btnPlayMusic">▶ Play</button>
+                        <div class="track-info">
+                            <div class="track-name" id="trackName">Therapeutic Tones</div>
+                            <div class="track-artist">Apple Music (Simulated)</div>
+                        </div>
+                        <button class="lyrics-btn" id="btnToggleLyrics">Lyrics</button>
+                    </div>
+                    <div class="lyrics-panel" id="lyricsPanel">
+                        Breathe in, let go of the weight.<br>
+                        You are safe in this moment.<br>
+                        Every step is a victory.<br>
+                        Focus on the rhythm of your heart...
+                    </div>
+                    <button class="btn-mood" id="btnResetMood" style="margin-top:15px; width:100%; background:#888;">Leave Room</button>
+                </div>
+            </div>
 
-  closeBtn.addEventListener('click', () => {
-    widget.classList.remove('open');
-    setTimeout(() => toggleBtn.style.display = 'block', 300);
-  });
+            <!-- Recovery Journey Gallery -->
+            <div class="tool-card">
+                <h3 class="tool-header">Recovery Journey Gallery</h3>
+                <p style="font-size: 0.9rem; color: #555;">Real timelines of healing shared by our alumni to inspire hope.</p>
+                <div class="gallery-grid">
+                    <div class="gallery-item">
+                        <img src="https://picsum.photos/id/1005/200/200" alt="Before">
+                        <div class="gallery-label">Day 1</div>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="https://picsum.photos/id/1011/200/200" alt="During">
+                        <div class="gallery-label">6 Months</div>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="https://picsum.photos/id/1012/200/200" alt="After">
+                        <div class="gallery-label">2 Years</div>
+                    </div>
+                </div>
+            </div>
 
-  async function sendMessage() {
-    const text = inputArea.value.trim();
-    if (!text) return;
+            <!-- Anonymous Reflection Wall -->
+            <div class="tool-card">
+                <h3 class="tool-header">Anonymous Reflection Wall</h3>
+                <form class="reflection-form" id="reflectionForm">
+                    <input type="text" class="reflection-input" id="reflectionInput" placeholder="Share a micro-win (e.g., 'I laughed today')" required>
+                    <button type="submit" class="btn-post">Post</button>
+                </form>
+                <div class="wall-board" id="wallBoard">
+                    <div class="wall-post">I managed to sleep for 6 solid hours last night.</div>
+                    <div class="wall-post">Said no to a craving that usually beats me.</div>
+                    <div class="wall-post">I actually enjoyed drinking my morning coffee today without feeling overwhelmed.</div>
+                </div>
+            </div>
 
-    const userMsg = document.createElement('div');
-    userMsg.className = 'prc-msg user';
-    userMsg.textContent = text;
-    chatBody.appendChild(userMsg);
-    inputArea.value = '';
-    chatBody.scrollTop = chatBody.scrollHeight;
+            <!-- Ways to Help & Directory -->
+            <div class="tool-card">
+                <h3 class="tool-header">Ways to Help & Directory</h3>
+                <div class="help-actions">
+                    <button class="btn-help btn-donate" onclick="alert('Redirecting to secure donation portal...')">Donate</button>
+                    <button class="btn-help btn-volunteer" onclick="alert('Opening volunteer application...')">Volunteer</button>
+                </div>
+                <h4 style="margin-bottom: 10px; font-size: 1rem;">Vetted Local Resources</h4>
+                <ul class="directory-list">
+                    <li class="directory-item">
+                        <span>San Diego Crisis Center</span>
+                        <a href="tel:988">Call 988</a>
+                    </li>
+                    <li class="directory-item">
+                        <span>County Mental Health Services</span>
+                        <a href="#">Visit Site</a>
+                    </li>
+                    <li class="directory-item">
+                        <span>Local Housing Assistance</span>
+                        <a href="#">Visit Site</a>
+                    </li>
+                </ul>
+            </div>
 
-    const loadingMsg = document.createElement('div');
-    loadingMsg.className = 'prc-msg bot';
-    loadingMsg.textContent = '...';
-    chatBody.appendChild(loadingMsg);
-    chatBody.scrollTop = chatBody.scrollHeight;
+        </div>
+    </section>
 
-    try {
-      const response = await fetch(BACKEND_WEBHOOK_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: text })
-      });
-      
-      const data = await response.json();
-      chatBody.removeChild(loadingMsg);
-      
-      if (data.isCrisis) {
-        crisisPopup.classList.add('visible');
-      }
-      
-      const botMsg = document.createElement('div');
-      botMsg.className = 'prc-msg bot';
-      botMsg.textContent = data.reply || "I'm here for you. Let's get you connected to a meeting.";
-      chatBody.appendChild(botMsg);
-    } catch (error) {
-      chatBody.removeChild(loadingMsg);
-      const errorMsg = document.createElement('div');
-      errorMsg.className = 'prc-msg bot';
-      errorMsg.textContent = "We're experiencing a connection issue, but you are not alone. Please call our main line at (858) 414-1856.";
-      chatBody.appendChild(errorMsg);
-    }
-    chatBody.scrollTop = chatBody.scrollHeight;
-  }
+    <!-- Login Modal -->
+    <div class="modal-overlay" id="loginModal">
+        <div class="modal-content">
+            <button class="modal-close" id="closeModalBtn">&times;</button>
+            <h2 class="modal-title">Patient Portal Login</h2>
+            <form id="loginForm" onsubmit="event.preventDefault(); alert('Authentication simulated.'); document.getElementById('loginModal').style.display='none';">
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" required>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" required>
+                </div>
+                <button type="submit" class="btn-submit">Log In</button>
+                <p style="text-align:center; margin-top:15px; font-size:0.85rem; color:#666;">
+                    Confidential & Secure Connection
+                </p>
+            </form>
+        </div>
+    </div>
 
-  sendBtn.addEventListener('click', sendMessage);
-  inputArea.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') sendMessage();
-  });
-</script>
+    <!-- Trauma-Informed AI Chatbot Widget -->
+    <div id="chatbot-widget">
+        <div class="chatbot-window" id="chatWindow">
+            <div class="chat-header">
+                <span>Support Assistant</span>
+                <button class="close-chat" id="closeChatBtn">&times;</button>
+            </div>
+            <div class="chat-messages" id="chatMessages">
+                <div class="msg bot">Hi. I'm a confidential digital assistant trained in addiction neuroscience. I'm here to listen, help you navigate triggers, or connect you to resources without judgment. How are you feeling right now?</div>
+            </div>
+            <div class="chat-input-area">
+                <input type="text" class="chat-input" id="chatInput" placeholder="Type a message...">
+                <button class="chat-send" id="chatSendBtn">Send</button>
+            </div>
+        </div>
+        <button class="chatbot-btn" id="openChatBtn">💬</button>
+    </div>
 
+    <!-- JavaScript Logic -->
+    <script>
+        // --- 1. Carousel Logic ---
+        const track = document.getElementById('carouselTrack');
+        const btnPrev = document.getElementById('btnPrev');
+        const btnNext = document.getElementById('btnNext');
+
+        btnNext.addEventListener('click', () => {
+            track.scrollBy({ left: 320, behavior: 'smooth' });
+        });
+        btnPrev.addEventListener('click', () => {
+            track.scrollBy({ left: -320, behavior: 'smooth' });
+        });
+
+        // --- 2. Interactive Schedule Logic ---
+        const scheduleData = [
+            { id: 1, title: "Morning Check-In & Intention Setting", time: "8:00 AM - 9:00 AM", spots: 5 },
+            { id: 2, title: "Neuroscience of Addiction Workshop", time: "11:00 AM - 12:30 PM", spots: 12 },
+            { id: 3, title: "Relapse Prevention Group", time: "2:00 PM - 3:30 PM", spots: 2 },
+            { id: 4, title: "Mindfulness & Grounding Techniques", time: "5:00 PM - 6:00 PM", spots: 0 }
+        ];
+
+        const scheduleContainer = document.getElementById('scheduleContainer');
+
+        function renderSchedule() {
+            scheduleContainer.innerHTML = '';
+            scheduleData.forEach((meeting, index) => {
+                const isFull = meeting.spots === 0;
+                const spotClass = meeting.spots <= 3 && !isFull ? 'spots-indicator low' : 'spots-indicator';
+                
+                const card = document.createElement('div');
+                card.className = 'meeting-card';
+                card.innerHTML = `
+                    <div class="meeting-title">${meeting.title}</div>
+                    <div class="meeting-meta">
+                        <span>🕒 ${meeting.time}</span>
+                        <span class="${spotClass}">${isFull ? 'Full' : meeting.spots + ' spots left'}</span>
+                    </div>
+                    <button class="btn-signup" ${isFull ? 'disabled' : ''} onclick="signUpForMeeting(${index})">
+                        ${isFull ? 'Meeting Full' : 'Sign Up'}
+                    </button>
+                `;
+                scheduleContainer.appendChild(card);
+            });
+        }
+
+        window.signUpForMeeting = function(index) {
+            if(scheduleData[index].spots > 0) {
+                scheduleData[index].spots -= 1;
+                renderSchedule();
+                alert(`Successfully registered for ${scheduleData[index].title}.`);
+            }
+        };
+        
+        renderSchedule(); // Initial render
+
+        // --- 3. The Mood Room Logic (Simulated LLM & Apple API) ---
+        const moodInput = document.getElementById('moodInput');
+        const btnAnalyzeMood = document.getElementById('btnAnalyzeMood');
+        const moodSetup = document.getElementById('moodSetup');
+        const moodPlayerUi = document.getElementById('moodPlayerUi');
+        const moodStatusText = document.getElementById('moodStatusText');
+        const trackName = document.getElementById('trackName');
+        const btnPlayMusic = document.getElementById('btnPlayMusic');
+        const btnToggleLyrics = document.getElementById('btnToggleLyrics');
+        const lyricsPanel = document.getElementById('lyricsPanel');
+        const btnResetMood = document.getElementById('btnResetMood');
+
+        let isPlaying = false;
+
+        btnAnalyzeMood.addEventListener('click', () => {
+            const text = moodInput.value.toLowerCase();
+            if(!text.trim()) return alert("Please enter how you're feeling to enter the room.");
+
+            // Simulated LLM Categorization based on addiction/trauma keywords
+            let category = "Reflective & Centering";
+            let track = "Ambient Focus Frequencies";
+
+            if (text.includes("trigger") || text.includes("crave") || text.includes("urge") || text.includes("want to use")) {
+                category = "High Trigger State - Grounding Protocol";
+                track = "Deep Binaural Grounding (432Hz)";
+            } else if (text.includes("anxious") || text.includes("panic") || text.includes("overwhelm") || text.includes("scared")) {
+                category = "Anxiety & Overstimulation";
+                track = "Slow Alpha Waves & Breath Sync";
+            } else if (text.includes("sad") || text.includes("depress") || text.includes("hopeless") || text.includes("alone")) {
+                category = "Melancholic - Emotional Support";
+                track = "Warm Acoustic Uplift";
+            }
+
+            moodSetup.style.display = 'none';
+            moodPlayerUi.style.display = 'block';
+            moodStatusText.innerText = `Room Environment: ${category}`;
+            trackName.innerText = track;
+        });
+
+        btnPlayMusic.addEventListener('click', () => {
+            isPlaying = !isPlaying;
+            btnPlayMusic.innerText = isPlaying ? "⏸ Pause" : "▶ Play";
+            btnPlayMusic.style.backgroundColor = isPlaying ? "var(--success)" : "var(--primary)";
+        });
+
+        btnToggleLyrics.addEventListener('click', () => {
+            if (lyricsPanel.style.display === 'block') {
+                lyricsPanel.style.display = 'none';
+                btnToggleLyrics.style.backgroundColor = "var(--primary)";
+            } else {
+                lyricsPanel.style.display = 'block';
+                btnToggleLyrics.style.backgroundColor = "var(--secondary)";
+            }
+        });
+
+        btnResetMood.addEventListener('click', () => {
+            moodPlayerUi.style.display = 'none';
+            moodSetup.style.display = 'flex';
+            moodInput.value = '';
+            isPlaying = false;
+            btnPlayMusic.innerText = "▶ Play";
+            btnPlayMusic.style.backgroundColor = "var(--primary)";
+            lyricsPanel.style.display = 'none';
+            btnToggleLyrics.style.backgroundColor = "var(--primary)";
+        });
+
+        // --- 4. Anonymous Reflection Wall Logic ---
+        const reflectionForm = document.getElementById('reflectionForm');
+        const reflectionInput = document.getElementById('reflectionInput');
+        const wallBoard = document.getElementById('wallBoard');
+
+        reflectionForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const text = reflectionInput.value.trim();
+            if(text) {
+                const newPost = document.createElement('div');
+                newPost.className = 'wall-post';
+                newPost.innerText = text;
+                wallBoard.insertBefore(newPost, wallBoard.firstChild);
+                reflectionInput.value = '';
+            }
+        });
+
+        // --- 5. Login Modal Logic ---
+        const navLoginBtn = document.getElementById('navLoginBtn');
+        const loginModal = document.getElementById('loginModal');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+
+        navLoginBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            loginModal.style.display = 'flex';
+        });
+
+        closeModalBtn.addEventListener('click', () => {
+            loginModal.style.display = 'none';
+        });
+
+        window.addEventListener('click', (e) => {
+            if (e.target === loginModal) {
+                loginModal.style.display = 'none';
+            }
+        });
+
+        // --- 6. Trauma-Informed AI Chatbot Logic ---
+        const openChatBtn = document.getElementById('openChatBtn');
+        const closeChatBtn = document.getElementById('closeChatBtn');
+        const chatWindow = document.getElementById('chatWindow');
+        const chatInput = document.getElementById('chatInput');
+        const chatSendBtn = document.getElementById('chatSendBtn');
+        const chatMessages = document.getElementById('chatMessages');
+
+        openChatBtn.addEventListener('click', () => {
+            chatWindow.style.display = 'flex';
+            openChatBtn.style.display = 'none';
+        });
+
+        closeChatBtn.addEventListener('click', () => {
+            chatWindow.style.display = 'none';
+            openChatBtn.style.display = 'flex';
+        });
+
+        function addMessage(text, sender) {
+            const msgDiv = document.createElement('div');
+            msgDiv.className = `msg ${sender}`;
+            msgDiv.innerText = text;
+            chatMessages.appendChild(msgDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function handleBotResponse(userText) {
+            const lowerText = userText.toLowerCase();
+            let response = "I hear you, and it takes courage to reach out. Can you tell me a little more about what's going on so I can best support you?";
+
+            // Neuroscience / De-escalation routing
+            if (lowerText.includes("crave") || lowerText.includes("relapse") || lowerText.includes("want to use") || lowerText.includes("urge")) {
+                response = "It makes complete physiological sense that you're having these urges; cravings are how our brain's reward center reacts to stress and withdrawal, not a personal failure. You are safe right now. Let's not fight the thought, just observe it. Can you take a slow breath and name one physical object you see in the room with you?";
+            } else if (lowerText.includes("anxious") || lowerText.includes("panic") || lowerText.includes("heart")) {
+                response = "It sounds like your nervous system is in 'fight or flight' mode right now. Your body is trying to protect you, even if it feels terrifying. I'm right here. Try breathing in for 4 seconds, and out for 6. Let's do that together.";
+            } else if (lowerText.includes("hopeless") || lowerText.includes("failure") || lowerText.includes("giving up")) {
+                response = "Recovery isn't linear, and feeling exhausted by the process is completely valid. You're not a failure, your brain is just healing from profound chemical changes. If you feel you are in immediate danger, please tap the Crisis Banner at the top or call 988. I'm here to listen.";
+            } else if (lowerText.includes("hello") || lowerText.includes("hi")) {
+                response = "Hi there. I'm here in a secure, confidential space. What's on your mind today?";
+            }
+
+            setTimeout(() => {
+                addMessage(response, 'bot');
+            }, 800 + Math.random() * 1000); // Simulate typing delay
+        }
+
+        chatSendBtn.addEventListener('click', () => {
+            const text = chatInput.value.trim();
+            if (text) {
+                addMessage(text, 'user');
+                chatInput.value = '';
+                handleBotResponse(text);
+            }
+        });
+
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                chatSendBtn.click();
+            }
+        });
+    </script>
 </body>
 </html>
